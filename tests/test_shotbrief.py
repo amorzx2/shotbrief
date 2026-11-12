@@ -14,7 +14,7 @@ import shotbrief
 
 
 def sample():
-    return {"title": "晨光 / Morning", "shots": [{"duration": 6, "scene": "海边", "camera": "Slow tilt", "action": "Open hands", "ending": "White frame"}]}
+    return {"title": "Morning \U0001f305", "shots": [{"duration": 6, "scene": "Coast \U0001f30a", "camera": "Slow tilt", "action": "Open hands", "ending": "White frame"}]}
 
 
 class ValidationTests(unittest.TestCase):
@@ -77,9 +77,9 @@ class ValidationTests(unittest.TestCase):
     def test_render_cards(self):
         doc = sample(); doc['shots'].append(dict(doc['shots'][0], duration=3.5))
         text = shotbrief.render(doc)
-        self.assertIn('2 shots · 9.5 seconds', text)
-        self.assertIn('## Shot 02 · 3.5s', text)
-        self.assertIn('海边', text)
+        self.assertIn('2 shots | 9.5 seconds', text)
+        self.assertIn('## Shot 02 | 3.5s', text)
+        self.assertIn('Coast \U0001f30a', text)
         self.assertTrue(text.endswith('\n'))
 
     def test_escape_markdown_html(self):
@@ -111,7 +111,7 @@ class CLITests(unittest.TestCase):
 
     def test_stdout(self):
         code, out, err = self.run_cli(self.source)
-        self.assertEqual(code, 0); self.assertIn('晨光', out); self.assertFalse(err)
+        self.assertEqual(code, 0); self.assertIn('Morning \U0001f305', out); self.assertFalse(err)
 
     def test_check(self):
         code, out, err = self.run_cli(self.source, '--check')
@@ -121,7 +121,7 @@ class CLITests(unittest.TestCase):
     def test_utf8_file(self):
         dest = self.root / 'output.md'
         self.assertEqual(self.run_cli(self.source, '-o', dest)[0], 0)
-        self.assertIn('晨光', dest.read_text(encoding='utf-8'))
+        self.assertIn('Morning \U0001f305', dest.read_text(encoding='utf-8'))
 
     def test_overwrite_requires_force(self):
         dest = self.root / 'output.md'; dest.write_text('keep', encoding='utf-8')
