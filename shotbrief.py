@@ -61,13 +61,13 @@ def render(data):
     """Validate data and return UTF-8-friendly Markdown, without model calls."""
     data = validate(data)
     total = sum(shot["duration"] for shot in data["shots"])
-    lines = [f"# {_escape(data['title'])}", "", f"{len(data['shots'])} shots · {total:g} seconds", ""]
-    labels = {"scene": "Scene / 场景", "camera": "Camera / 镜头", "action": "Action / 动作", "ending": "Ending / 结尾衔接"}
+    lines = [f"# {_escape(data['title'])}", "", f"{len(data['shots'])} shots | {total:g} seconds", ""]
+    labels = {"scene": "Scene", "camera": "Camera", "action": "Action", "ending": "Ending"}
     for i, shot in enumerate(data["shots"], 1):
-        lines += [f"## Shot {i:02d} · {shot['duration']:g}s", ""]
+        lines += [f"## Shot {i:02d} | {shot['duration']:g}s", ""]
         for field in TEXT_FIELDS:
             lines.append(f"- **{labels[field]}:** {_escape(shot[field])}")
-        lines += ["", "**Prompt card / 提示词卡片**", "", _escape(
+        lines += ["", "**Prompt card**", "", _escape(
             f"Duration: {shot['duration']:g} seconds. Scene: {shot['scene']} "
             f"Camera: {shot['camera']} Action: {shot['action']} Ending: {shot['ending']}"), ""]
     return "\n".join(lines)
